@@ -5,6 +5,7 @@ import Layout from "pages/Layout/Layout";
 import Dinner from "pages/Dinner/Dinner";
 import Lunch from "pages/Lunch/Lunch";
 import Breakfast from "pages/Breakfast/Breakfast";
+import Register from "pages/Register/Register";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
+          <Route path="register" element={<Register />} />
           <Route path="dinner" element={<Dinner />} />
           <Route path="lunch" element={<Lunch />} />
           <Route path="breakfast" element={<Breakfast />} />

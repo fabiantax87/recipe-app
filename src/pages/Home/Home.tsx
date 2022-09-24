@@ -1,9 +1,19 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { logOut } from "../../firebase/firebase-config";
+import { auth, logout } from "../../firebase/firebase-config";
+import { useAuthState } from "react-firebase-hooks/auth";
 import "./Home.scss";
 
 const Home = () => {
+  const [user] = useAuthState(auth);
+
   let navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [user]);
 
   return (
     <div className="home">
@@ -13,7 +23,7 @@ const Home = () => {
         <button onClick={() => navigate("breakfast")}>Breakfast</button>
       </div>
 
-      <button onClick={(e) => logOut()}>Log out</button>
+      <button onClick={(e) => logout()}>Log out</button>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { registerWithEmailAndPassword, auth } from "../../firebase/firebase-config";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -24,7 +24,8 @@ const Register = () => {
   useEffect(() => {
     if (loading) {
       return;
-    } else {
+    }
+    if (user) {
       navigate("/");
     }
   }, [user, loading]);
@@ -38,6 +39,7 @@ const Register = () => {
         <input type="password" value={confirmPass} placeholder="Confirm password" onChange={(e) => setConfirmPass(e.target.value)} />
         <button type="submit">Submit</button>
       </form>
+      <Link to={"/login"}>Login instead</Link>
     </div>
   );
 };

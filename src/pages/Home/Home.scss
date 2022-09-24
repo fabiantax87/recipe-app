@@ -1,0 +1,18 @@
+.home {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .buttons {
+    height: 40%;
+    width: 80%;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 50px;
+
+    button {
+      font-size: 30px;
+    }
+  }
+}

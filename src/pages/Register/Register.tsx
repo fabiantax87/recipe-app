@@ -2,6 +2,7 @@ import { registerWithEmailAndPassword, auth } from "../../firebase/firebase-conf
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "./Register.scss";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -31,8 +32,9 @@ const Register = () => {
   }, [user, loading]);
 
   return (
-    <div>
-      <form onSubmit={(e) => submitRegister(e)}>
+    <div className="register-container">
+      <h1>Register</h1>
+      <form className="register-form" onSubmit={(e) => submitRegister(e)}>
         <input type="text" value={username} placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
         <input type="text" value={email} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
         <input type="password" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} />

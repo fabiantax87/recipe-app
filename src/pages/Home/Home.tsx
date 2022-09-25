@@ -18,9 +18,9 @@ const Home = () => {
   return (
     <div className="home">
       <div className="buttons">
-        <button onClick={() => navigate("dinner")}>Dinner</button>
-        <button onClick={() => navigate("lunch")}>Lunch</button>
         <button onClick={() => navigate("breakfast")}>Breakfast</button>
+        <button onClick={() => navigate("lunch")}>Lunch</button>
+        <button onClick={() => navigate("dinner")}>Dinner</button>
       </div>
 
       <button onClick={(e) => logout()}>Log out</button>

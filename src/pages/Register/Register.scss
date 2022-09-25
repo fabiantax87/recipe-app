@@ -1,0 +1,87 @@
+.register-container {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .register-content {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    box-shadow: 0px 0px 15px var(--light-shadow);
+    padding: 30px;
+    padding-bottom: 40px;
+    border-radius: 5px;
+
+    .register-form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      input {
+        padding: 10px;
+        border: 2px solid var(--light-green);
+        border-radius: 3px;
+        font-size: 16px;
+        transition: ease 0.2s;
+      }
+      input:focus {
+        outline: none;
+        background-color: var(--light-green);
+      }
+
+      button {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color: var(--main-green);
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 3px;
+      }
+
+      button:hover {
+        background-color: var(--dark-green);
+      }
+    }
+
+    .other-options {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 49% 49%;
+      gap: 2%;
+
+      button {
+        background-color: white;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        box-shadow: 0px 0px 5px var(--dark-shadow);
+      }
+      button:hover {
+        background-color: var(--light-grey);
+      }
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      .mail-icon {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2px;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    }
+  }
+}

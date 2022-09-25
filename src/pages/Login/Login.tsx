@@ -1,4 +1,4 @@
-import { logInWithEmailAndPassword, auth } from "../../firebase/firebase-config";
+import { logInWithEmailAndPassword, auth, googleAuthentication } from "../../firebase/firebase-config";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -34,7 +34,7 @@ const Login = () => {
           <button type="submit">Log in</button>
         </form>
         <div className="other-options">
-          <button>
+          <button onClick={(e) => googleAuthentication()}>
             <svg className="google-icon" viewBox="0 0 48 48">
               <defs>
                 <path

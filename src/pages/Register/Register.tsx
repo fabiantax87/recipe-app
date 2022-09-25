@@ -1,4 +1,4 @@
-import { registerWithEmailAndPassword, auth } from "../../firebase/firebase-config";
+import { registerWithEmailAndPassword, auth, googleAuthentication } from "../../firebase/firebase-config";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -43,7 +43,7 @@ const Register = () => {
           <button type="submit">Submit</button>
         </form>
         <div className="other-options">
-          <button>
+          <button onClick={(e) => googleAuthentication()}>
             <svg className="google-icon" viewBox="0 0 48 48">
               <defs>
                 <path

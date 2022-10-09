@@ -7,6 +7,7 @@ import Lunch from "pages/Lunch/Lunch";
 import Breakfast from "pages/Breakfast/Breakfast";
 import Register from "pages/Register/Register";
 import Login from "pages/Login/Login";
+import Account from "pages/Account/Account";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="/account/:id" element={<Account />} />
           <Route path="dinner" element={<Dinner />} />
           <Route path="lunch" element={<Lunch />} />
           <Route path="breakfast" element={<Breakfast />} />

@@ -19,7 +19,8 @@ const Login = () => {
   useEffect(() => {
     if (loading) {
       return;
-    } else {
+    }
+    if (user) {
       navigate("/");
     }
   }, [user, loading]);

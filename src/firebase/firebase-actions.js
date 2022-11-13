@@ -16,8 +16,8 @@ const googleAuthentication = async () => {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
     const q = query(collection(db, "users"), where("uid", "==", user.uid));
-    const docs = await getDocs(q);
-    if (docs.docs.length === 0) {
+    const currUser = await getDocs(q);
+    if (currUser.docs.length === 0) {
       await addDoc(collection(db, "users"), {
         uid: user.uid,
         username: user.displayName,
@@ -27,7 +27,9 @@ const googleAuthentication = async () => {
         createdRecipes: [],
       });
     }
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const logInWithEmailAndPassword = async (email, password) => {
@@ -61,4 +63,20 @@ const logout = () => {
   signOut(auth);
 };
 
-export { analytics, auth, logInWithEmailAndPassword, registerWithEmailAndPassword, logout, googleAuthentication };
+const createRecipe = async (recipeName, groceryList, recipeStepList) => {
+  try {
+    const user = auth.currentUser;
+    if (user) {
+      await addDoc(collection(db, "recipes"), {
+        uid: user.uid,
+        name: recipeName,
+        groceryList: groceryList,
+        recipeSteps: recipeStepList,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export { analytics, auth, logInWithEmailAndPassword, registerWithEmailAndPassword, logout, googleAuthentication, createRecipe };

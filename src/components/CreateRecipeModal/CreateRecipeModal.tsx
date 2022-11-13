@@ -1,9 +1,11 @@
 import GroceryListItem from "components/GroceryListItem/GroceryListItem";
 import RecipeStep from "components/RecipeStep/RecipeStep";
+import { createRecipe } from "../../firebase/firebase-actions";
 import { useState } from "react";
 import "./CreateRecipeModal.scss";
 
 const CreateRecipeModal = () => {
+  const [recipeName, setRecipeName] = useState("");
   const [groceryList, setGroceryList] = useState<any>([]);
   const [recipeStepList, setRecipeStepList] = useState<any>([]);
   const [groceryItem, setGroceryItem] = useState("");
@@ -27,6 +29,9 @@ const CreateRecipeModal = () => {
 
   const submitRecipe = (e: any) => {
     e.preventDefault();
+    if (recipeName !== "" || groceryList.length > 0 || recipeStepList.length > 0) {
+      createRecipe(recipeName, groceryList, recipeStepList);
+    }
   };
 
   return (
@@ -38,7 +43,7 @@ const CreateRecipeModal = () => {
         <div className="modal-content">
           <form onSubmit={(e) => addGrocery(e)} className="modal-form">
             <label>Recipe name</label>
-            <input type="text" placeholder="Recipe name" />
+            <input type="text" placeholder="Recipe name" value={recipeName} onChange={(e) => setRecipeName(e.target.value)} />
             <label>Meal picture</label>
             <input type="file" placeholder="Recipe picture" />
             <div className="grocery-list">

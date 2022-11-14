@@ -15,8 +15,26 @@
     background-color: white;
 
     .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 10px;
       border-bottom: 2px solid lightgrey;
+
+      svg {
+        width: 30px;
+        height: 30px;
+        fill: none;
+        stroke: black;
+        stroke-width: 2px;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      svg:hover {
+        cursor: pointer;
+        background-color: lightgrey;
+        border-radius: 5px;
+      }
     }
 
     .modal-content {

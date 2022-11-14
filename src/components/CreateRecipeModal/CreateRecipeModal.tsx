@@ -1,11 +1,18 @@
 import GroceryListItem from "components/GroceryListItem/GroceryListItem";
 import RecipeStep from "components/RecipeStep/RecipeStep";
-import { createRecipe } from "../../firebase/firebase-actions";
+import { createRecipe, storage } from "../../firebase/firebase-actions";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useState } from "react";
+import { v4 } from "uuid";
 import "./CreateRecipeModal.scss";
 
-const CreateRecipeModal = () => {
+type CreateRecipeModalProps = {
+  switchModalOpen: any;
+};
+
+const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
   const [recipeName, setRecipeName] = useState("");
+  const [recipeImg, setRecipeImg] = useState<any>([]);
   const [groceryList, setGroceryList] = useState<any>([]);
   const [recipeStepList, setRecipeStepList] = useState<any>([]);
   const [groceryItem, setGroceryItem] = useState("");
@@ -27,25 +34,41 @@ const CreateRecipeModal = () => {
     setRecipeStep("");
   };
 
-  const submitRecipe = (e: any) => {
+  const submitRecipe = async (e: any) => {
     e.preventDefault();
-    if (recipeName !== "" || groceryList.length > 0 || recipeStepList.length > 0) {
-      createRecipe(recipeName, groceryList, recipeStepList);
-    }
+
+    const imgRef = ref(storage, `recipe-images/${recipeImg.name + v4()}`);
+    await uploadBytes(imgRef, recipeImg).then(() => {
+      getDownloadURL(imgRef)
+        .then((url) => {
+          if (recipeName !== "" || groceryList.length > 0 || recipeStepList.length > 0 || url !== "") {
+            createRecipe(recipeName, groceryList, recipeStepList, url);
+          } else {
+            alert("Not all fields have been filled, try again");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
   };
 
   return (
     <div className="modal-background">
       <div className="modal-container">
-        <div className="modal-header">
+        <header className="modal-header">
           <h3>Create a recipe</h3>
-        </div>
+          <svg onClick={() => switchModalOpen()} viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </header>
         <div className="modal-content">
           <form onSubmit={(e) => addGrocery(e)} className="modal-form">
             <label>Recipe name</label>
             <input type="text" placeholder="Recipe name" value={recipeName} onChange={(e) => setRecipeName(e.target.value)} />
             <label>Meal picture</label>
-            <input type="file" placeholder="Recipe picture" />
+            <input type="file" onChange={(e: any) => setRecipeImg(e.target.files[0])} />
             <div className="grocery-list">
               {groceryList.map((grocery: any, index: number) => {
                 return <GroceryListItem grocery={grocery} index={index} />;

@@ -3,11 +3,13 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { addDoc, getFirestore, collection, query, where, getDocs } from "@firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const analytics = getAnalytics(app);
+const storage = getStorage(app);
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -63,13 +65,14 @@ const logout = () => {
   signOut(auth);
 };
 
-const createRecipe = async (recipeName, groceryList, recipeStepList) => {
+const createRecipe = async (recipeName, groceryList, recipeStepList, recipeImageUrl) => {
   try {
     const user = auth.currentUser;
     if (user) {
       await addDoc(collection(db, "recipes"), {
         uid: user.uid,
         name: recipeName,
+        recipeImage: recipeImageUrl,
         groceryList: groceryList,
         recipeSteps: recipeStepList,
       });
@@ -79,4 +82,4 @@ const createRecipe = async (recipeName, groceryList, recipeStepList) => {
   }
 };
 
-export { analytics, auth, logInWithEmailAndPassword, registerWithEmailAndPassword, logout, googleAuthentication, createRecipe };
+export { analytics, auth, storage, logInWithEmailAndPassword, registerWithEmailAndPassword, logout, googleAuthentication, createRecipe };

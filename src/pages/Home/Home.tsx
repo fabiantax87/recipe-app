@@ -6,12 +6,16 @@ import "./Home.scss";
 const Home = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
+  const switchModalOpen = () => {
+    setModalOpen(!modalOpen);
+  };
+
   let navigate = useNavigate();
 
   return (
     <div className="home-container">
-      {modalOpen ? <CreateRecipeModal /> : <></>}
-      <button className="create-recipe-btn" onClick={(e) => setModalOpen(!modalOpen)}>
+      {modalOpen ? <CreateRecipeModal switchModalOpen={switchModalOpen} /> : <></>}
+      <button className="create-recipe-btn" onClick={(e) => switchModalOpen()}>
         Create Recipe
       </button>
       <div className="home">

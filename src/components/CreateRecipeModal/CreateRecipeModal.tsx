@@ -14,8 +14,8 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
   const [recipeName, setRecipeName] = useState("");
   const [recipeImg, setRecipeImg] = useState<any>([]);
   const [groceryList, setGroceryList] = useState<any>([]);
-  const [recipeStepList, setRecipeStepList] = useState<any>([]);
   const [groceryItem, setGroceryItem] = useState("");
+  const [recipeStepList, setRecipeStepList] = useState<any>([]);
   const [recipeStep, setRecipeStep] = useState("");
 
   const addGrocery = (e: any) => {
@@ -69,7 +69,7 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
           <form onSubmit={(e) => addGrocery(e)} className="modal-form">
             <label>Meal picture</label>
             <input type="file" onChange={(e: any) => setRecipeImg(e.target.files[0])} />
-            <GroceryList groceryList={groceryList} />
+            <GroceryList groceryList={groceryList} setGroceryList={setGroceryList} />
             <label>Grocery list</label>
             <div className="grocery-list-input">
               <input type="text" placeholder="Grocery name" value={groceryItem} onChange={(e) => setGroceryItem(e.target.value)} />
@@ -77,7 +77,7 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
             </div>
           </form>
           <form onSubmit={(e) => addRecipeStep(e)} className="modal-form">
-            <RecipeStepList recipeStepList={recipeStepList} />
+            <RecipeStepList recipeStepList={recipeStepList} setRecipeStepList={setRecipeStepList} />
             <label>Recipe steps</label>
             <div className="recipe-step-input">
               <input type="text" placeholder="Step description" value={recipeStep} onChange={(e) => setRecipeStep(e.target.value)} />

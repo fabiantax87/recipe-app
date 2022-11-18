@@ -17,6 +17,7 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
   const [groceryItem, setGroceryItem] = useState("");
   const [recipeStepList, setRecipeStepList] = useState<any>([]);
   const [recipeStep, setRecipeStep] = useState("");
+  const [mealType, setMealType] = useState({ breakfast: false, lunch: false, dinner: false });
 
   const addGrocery = (e: any) => {
     e.preventDefault();
@@ -34,6 +35,18 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
     setRecipeStep("");
   };
 
+  const toggleBreakfast = () => {
+    setMealType({ breakfast: !mealType.breakfast, lunch: mealType.lunch, dinner: mealType.dinner });
+  };
+
+  const toggleLunch = () => {
+    setMealType({ breakfast: mealType.breakfast, lunch: !mealType.lunch, dinner: mealType.dinner });
+  };
+
+  const toggleDinner = () => {
+    setMealType({ breakfast: mealType.breakfast, lunch: mealType.lunch, dinner: !mealType.dinner });
+  };
+
   const submitRecipe = async (e: any) => {
     e.preventDefault();
 
@@ -41,10 +54,14 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
     await uploadBytes(imgRef, recipeImg).then(() => {
       getDownloadURL(imgRef)
         .then((url) => {
-          if (recipeName !== "" && groceryList.length > 0 && recipeStepList.length > 0 && url !== "") {
-            createRecipe(recipeName, groceryList, recipeStepList, url);
-          } else {
+          if (mealType.breakfast === false && mealType.lunch === false && mealType.dinner === false) {
             alert("Not all fields have been filled, try again");
+          } else {
+            if (recipeName !== "" && groceryList.length > 0 && recipeStepList.length > 0 && recipeImg.name) {
+              createRecipe(recipeName, groceryList, recipeStepList, url, mealType);
+            } else {
+              alert("Not all fields have been filled, try again");
+            }
           }
         })
         .catch((err) => {
@@ -65,27 +82,48 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
         </header>
         <div className="modal-content">
           <label>Recipe name</label>
-          <input type="text" placeholder="Recipe name" value={recipeName} onChange={(e) => setRecipeName(e.target.value)} />
+          <input type="text" placeholder="Give your recipe a name" value={recipeName} onChange={(e) => setRecipeName(e.target.value)} />
+          <label>Meal picture</label>
+          <input type="file" onChange={(e: any) => setRecipeImg(e.target.files[0])} accept="image/png, image/jpeg" />
           <form onSubmit={(e) => addGrocery(e)} className="modal-form">
-            <label>Meal picture</label>
-            <input type="file" onChange={(e: any) => setRecipeImg(e.target.files[0])} />
-            <GroceryList groceryList={groceryList} setGroceryList={setGroceryList} />
             <label>Grocery list</label>
             <div className="grocery-list-input">
               <input type="text" placeholder="Grocery name" value={groceryItem} onChange={(e) => setGroceryItem(e.target.value)} />
               <button onClick={(e) => addGrocery(e)}>Add</button>
             </div>
+            <GroceryList groceryList={groceryList} setGroceryList={setGroceryList} />
           </form>
           <form onSubmit={(e) => addRecipeStep(e)} className="modal-form">
-            <RecipeStepList recipeStepList={recipeStepList} setRecipeStepList={setRecipeStepList} />
             <label>Recipe steps</label>
             <div className="recipe-step-input">
               <input type="text" placeholder="Step description" value={recipeStep} onChange={(e) => setRecipeStep(e.target.value)} />
               <button onClick={(e) => addRecipeStep(e)}>Add</button>
             </div>
+            <RecipeStepList recipeStepList={recipeStepList} setRecipeStepList={setRecipeStepList} />
           </form>
-          <button onClick={(e) => submitRecipe(e)}>Create</button>
+          <div className="meal-type">
+            <label className="breakfast-check">
+              <input type="checkbox" name="breakfast" onChange={() => toggleBreakfast()} />
+              Breakfast
+            </label>
+            <label className="lunch-check">
+              <input type="checkbox" name="lunch" onChange={() => toggleLunch()} />
+              Lunch
+            </label>
+            <label className="dinner-check">
+              <input type="checkbox" name="dinner" onChange={() => toggleDinner()} />
+              Dinner
+            </label>
+          </div>
         </div>
+        <footer className="modal-footer">
+          <button className="create-btn" onClick={(e) => submitRecipe(e)}>
+            Create Recipe
+          </button>
+          <button className="cancel-btn" onClick={() => switchModalOpen()}>
+            Cancel
+          </button>
+        </footer>
       </div>
     </div>
   );

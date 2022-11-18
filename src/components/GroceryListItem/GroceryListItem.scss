@@ -1,0 +1,33 @@
+.grocery-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  background-color: var(--dark-green-transparent);
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+
+  .content {
+    display: flex;
+    gap: 10px;
+    font-size: 15px;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: black;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    &:hover {
+      stroke: var(--main-green);
+      cursor: pointer;
+      border-radius: 3px;
+    }
+  }
+}

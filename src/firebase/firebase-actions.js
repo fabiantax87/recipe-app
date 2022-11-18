@@ -1,22 +1,15 @@
+import { firebaseConfig } from "./firebase-config";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { addDoc, getFirestore, collection, query, where, getDocs } from "@firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyAqr8xDQev0hRjEYTdlqKPyL93HzZ2ovzc",
-  authDomain: "recipe-app-32909.firebaseapp.com",
-  projectId: "recipe-app-32909",
-  storageBucket: "recipe-app-32909.appspot.com",
-  messagingSenderId: "15083685829",
-  appId: "1:15083685829:web:0c0f4121579902914fedac",
-  measurementId: "G-FR3HQRG1PX",
-};
+import { getStorage } from "firebase/storage";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const analytics = getAnalytics(app);
+const storage = getStorage(app);
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -25,8 +18,8 @@ const googleAuthentication = async () => {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
     const q = query(collection(db, "users"), where("uid", "==", user.uid));
-    const docs = await getDocs(q);
-    if (docs.docs.length === 0) {
+    const currUser = await getDocs(q);
+    if (currUser.docs.length === 0) {
       await addDoc(collection(db, "users"), {
         uid: user.uid,
         username: user.displayName,
@@ -36,7 +29,9 @@ const googleAuthentication = async () => {
         createdRecipes: [],
       });
     }
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 const logInWithEmailAndPassword = async (email, password) => {
@@ -70,4 +65,22 @@ const logout = () => {
   signOut(auth);
 };
 
-export { analytics, auth, logInWithEmailAndPassword, registerWithEmailAndPassword, logout, googleAuthentication };
+const createRecipe = async (recipeName, groceryList, recipeStepList, recipeImageUrl, mealType) => {
+  try {
+    const user = auth.currentUser;
+    if (user) {
+      await addDoc(collection(db, "recipes"), {
+        uid: user.uid,
+        name: recipeName,
+        recipeImage: recipeImageUrl,
+        groceryList: groceryList,
+        recipeSteps: recipeStepList,
+        mealType: mealType,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export { analytics, auth, storage, logInWithEmailAndPassword, registerWithEmailAndPassword, logout, googleAuthentication, createRecipe };

@@ -1,0 +1,8 @@
+.grocery-list {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--main-green-transparent);
+  border-radius: 5px;
+  gap: 10px;
+  padding: 10px;
+}

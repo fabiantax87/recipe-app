@@ -1,4 +1,4 @@
-import { registerWithEmailAndPassword, auth, googleAuthentication } from "../../firebase/firebase-config";
+import { registerWithEmailAndPassword, auth, googleAuthentication } from "../../firebase/firebase-actions";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";

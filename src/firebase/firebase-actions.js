@@ -65,7 +65,7 @@ const logout = () => {
   signOut(auth);
 };
 
-const createRecipe = async (recipeName, groceryList, recipeStepList, recipeImageUrl) => {
+const createRecipe = async (recipeName, groceryList, recipeStepList, recipeImageUrl, mealType) => {
   try {
     const user = auth.currentUser;
     if (user) {
@@ -75,6 +75,7 @@ const createRecipe = async (recipeName, groceryList, recipeStepList, recipeImage
         recipeImage: recipeImageUrl,
         groceryList: groceryList,
         recipeSteps: recipeStepList,
+        mealType: mealType,
       });
     }
   } catch (err) {

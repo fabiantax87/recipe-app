@@ -64,6 +64,9 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
             }
           }
         })
+        .then(() => {
+          switchModalOpen();
+        })
         .catch((err) => {
           console.error(err);
         });
@@ -83,15 +86,25 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
         <div className="modal-content">
           <label>Recipe name</label>
           <input type="text" placeholder="Give your recipe a name" value={recipeName} onChange={(e) => setRecipeName(e.target.value)} />
-          <label>Meal picture</label>
-          <input type="file" onChange={(e: any) => setRecipeImg(e.target.files[0])} accept="image/png, image/jpeg" />
+          <div className="file-input">
+            <label>Meal picture</label>
+            <label htmlFor="file-upload" className="custom-file-upload">
+              <svg className="upload-icon" viewBox="0 0 24 24">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              {recipeImg.name ? <p>{recipeImg.name}</p> : <p>Add a picture</p>}
+            </label>
+            <input type="file" onChange={(e: any) => setRecipeImg(e.target.files[0])} id="file-upload" accept="image/png, image/jpeg" />
+          </div>
           <form onSubmit={(e) => addGrocery(e)} className="modal-form">
             <label>Grocery list</label>
             <div className="grocery-list-input">
               <input type="text" placeholder="Grocery name" value={groceryItem} onChange={(e) => setGroceryItem(e.target.value)} />
               <button onClick={(e) => addGrocery(e)}>Add</button>
             </div>
-            <GroceryList groceryList={groceryList} setGroceryList={setGroceryList} />
+            {groceryList.length > 0 ? <GroceryList groceryList={groceryList} setGroceryList={setGroceryList} /> : <></>}
           </form>
           <form onSubmit={(e) => addRecipeStep(e)} className="modal-form">
             <label>Recipe steps</label>
@@ -99,18 +112,18 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
               <input type="text" placeholder="Step description" value={recipeStep} onChange={(e) => setRecipeStep(e.target.value)} />
               <button onClick={(e) => addRecipeStep(e)}>Add</button>
             </div>
-            <RecipeStepList recipeStepList={recipeStepList} setRecipeStepList={setRecipeStepList} />
+            {recipeStepList.length > 0 ? <RecipeStepList recipeStepList={recipeStepList} setRecipeStepList={setRecipeStepList} /> : <></>}
           </form>
           <div className="meal-type">
-            <label className="breakfast-check">
+            <label className="meal-check">
               <input type="checkbox" name="breakfast" onChange={() => toggleBreakfast()} />
               Breakfast
             </label>
-            <label className="lunch-check">
+            <label className="meal-check">
               <input type="checkbox" name="lunch" onChange={() => toggleLunch()} />
               Lunch
             </label>
-            <label className="dinner-check">
+            <label className="meal-check">
               <input type="checkbox" name="dinner" onChange={() => toggleDinner()} />
               Dinner
             </label>

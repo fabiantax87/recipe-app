@@ -65,7 +65,7 @@ const logout = () => {
   signOut(auth);
 };
 
-const createRecipe = async (recipeName, groceryList, recipeStepList, recipeImageUrl, mealType) => {
+const createRecipe = async (recipeName, groceryList, recipeStepList, recipeImageUrl, recipeType) => {
   try {
     const user = auth.currentUser;
     if (user) {
@@ -75,7 +75,7 @@ const createRecipe = async (recipeName, groceryList, recipeStepList, recipeImage
         recipeImage: recipeImageUrl,
         groceryList: groceryList,
         recipeSteps: recipeStepList,
-        mealType: mealType,
+        recipeType: recipeType,
       });
     }
   } catch (err) {
@@ -83,4 +83,4 @@ const createRecipe = async (recipeName, groceryList, recipeStepList, recipeImage
   }
 };
 
-export { analytics, auth, storage, logInWithEmailAndPassword, registerWithEmailAndPassword, logout, googleAuthentication, createRecipe };
+export { db, analytics, auth, storage, logInWithEmailAndPassword, registerWithEmailAndPassword, logout, googleAuthentication, createRecipe };

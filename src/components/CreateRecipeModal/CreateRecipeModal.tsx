@@ -17,7 +17,7 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
   const [groceryItem, setGroceryItem] = useState("");
   const [recipeStepList, setRecipeStepList] = useState<any>([]);
   const [recipeStep, setRecipeStep] = useState("");
-  const [mealType, setMealType] = useState({ breakfast: false, lunch: false, dinner: false });
+  const [recipeType, setRecipeType] = useState({ breakfast: false, lunch: false, dinner: false });
 
   const addGrocery = (e: any) => {
     e.preventDefault();
@@ -36,15 +36,15 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
   };
 
   const toggleBreakfast = () => {
-    setMealType({ breakfast: !mealType.breakfast, lunch: mealType.lunch, dinner: mealType.dinner });
+    setRecipeType({ breakfast: !recipeType.breakfast, lunch: recipeType.lunch, dinner: recipeType.dinner });
   };
 
   const toggleLunch = () => {
-    setMealType({ breakfast: mealType.breakfast, lunch: !mealType.lunch, dinner: mealType.dinner });
+    setRecipeType({ breakfast: recipeType.breakfast, lunch: !recipeType.lunch, dinner: recipeType.dinner });
   };
 
   const toggleDinner = () => {
-    setMealType({ breakfast: mealType.breakfast, lunch: mealType.lunch, dinner: !mealType.dinner });
+    setRecipeType({ breakfast: recipeType.breakfast, lunch: recipeType.lunch, dinner: !recipeType.dinner });
   };
 
   const submitRecipe = async (e: any) => {
@@ -54,11 +54,11 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
     await uploadBytes(imgRef, recipeImg).then(() => {
       getDownloadURL(imgRef)
         .then((url) => {
-          if (mealType.breakfast === false && mealType.lunch === false && mealType.dinner === false) {
+          if (recipeType.breakfast === false && recipeType.lunch === false && recipeType.dinner === false) {
             alert("Not all fields have been filled, try again");
           } else {
             if (recipeName !== "" && groceryList.length > 0 && recipeStepList.length > 0 && recipeImg.name) {
-              createRecipe(recipeName, groceryList, recipeStepList, url, mealType);
+              createRecipe(recipeName, groceryList, recipeStepList, url, recipeType);
             } else {
               alert("Not all fields have been filled, try again");
             }

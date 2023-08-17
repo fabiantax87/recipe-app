@@ -65,17 +65,23 @@ const logout = () => {
   signOut(auth);
 };
 
-const createRecipe = async (recipeName, groceryList, recipeStepList, recipeImageUrl, recipeType) => {
+const createRecipe = async (recipeName, recipeImageUrl, recipeDesc, groceryList, recipeStepList, estimateTime, estimateCalories, recipeType) => {
   try {
     const user = auth.currentUser;
+    const date = Date.now();
+
     if (user) {
       await addDoc(collection(db, "recipes"), {
         uid: user.uid,
         name: recipeName,
         recipeImage: recipeImageUrl,
+        recipeDesc: recipeDesc,
         groceryList: groceryList,
         recipeSteps: recipeStepList,
+        estimateTime: estimateTime,
+        estimateCalories: estimateCalories,
         recipeType: recipeType,
+        dateCreated: date,
       });
     }
   } catch (err) {

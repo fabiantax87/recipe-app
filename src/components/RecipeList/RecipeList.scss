@@ -1,8 +1,8 @@
 .recipe-list {
-  width: 90%;
   display: grid;
-  grid-template-columns: repeat(3, 20%);
-  gap: 5%;
-  justify-content: center;
+  grid-template-columns: repeat(4, 20%);
+  gap: 10%;
   margin-top: 30px;
+  justify-content: center;
+  justify-items: center;
 }

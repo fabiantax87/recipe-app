@@ -12,7 +12,7 @@
     display: flex;
     flex-direction: column;
     background-color: white;
-    border-radius: 5px;
+    border-radius: var(--border-radius-md);
     margin-top: 2%;
     font-size: 15px;
 
@@ -35,7 +35,7 @@
       svg:hover {
         cursor: pointer;
         background-color: lightgrey;
-        border-radius: 5px;
+        border-radius: var(--border-radius-md);
       }
     }
 
@@ -47,10 +47,23 @@
       gap: 10px;
       overflow-y: scroll;
 
-      input[type="text"] {
+      input[type="text"],
+      input[type="number"],
+      textarea {
         padding: 5px;
-        border-radius: 5px;
+        border-radius: var(--border-radius-md);
         border: 1px solid black;
+        resize: none;
+      }
+
+      .basic-info-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        textarea {
+          height: 100px;
+        }
       }
 
       input[type="file"] {
@@ -60,13 +73,14 @@
       .file-input {
         display: flex;
         flex-direction: column;
+        gap: 10px;
 
         .custom-file-upload {
           display: flex;
           align-items: center;
           gap: 10px;
           border: 1px solid black;
-          border-radius: 5px;
+          border-radius: var(--border-radius-md);
           padding: 5px;
 
           &:hover {
@@ -98,16 +112,20 @@
         .recipe-step-input {
           display: flex;
           gap: 5px;
+
+          input {
+            width: 100%;
+          }
         }
 
         button {
           color: white;
           background-color: var(--main-green);
           border: none;
-          border-radius: 5px;
+          border-radius: var(--border-radius-md);
           padding: 5px;
-          padding-left: 10px;
-          padding-right: 10px;
+          padding-left: 24px;
+          padding-right: 24px;
 
           &:hover {
             background-color: var(--light-green);
@@ -115,12 +133,32 @@
         }
       }
 
-      .meal-type {
+      .estimate-time {
+        display: flex;
+        gap: 5px;
+
+        input {
+          width: 100%;
+        }
+
+        select {
+          background-color: var(--main-green);
+          color: white;
+          border-radius: var(--border-radius-md);
+          text-align: center;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+
+      .recipe-type {
         display: flex;
         flex-direction: column;
         gap: 5px;
 
-        .meal-check {
+        .recipe-check {
           display: flex;
           align-items: center;
           gap: 5px;
@@ -140,7 +178,7 @@
         color: white;
         background-color: var(--main-green);
         border: none;
-        border-radius: 5px;
+        border-radius: var(--border-radius-md);
         padding: 5px;
         padding-left: 10px;
         padding-right: 10px;
@@ -153,7 +191,7 @@
       .cancel-btn {
         border: none;
         background-color: lightgrey;
-        border-radius: 5px;
+        border-radius: var(--border-radius-md);
         padding: 5px;
         padding-left: 10px;
         padding-right: 10px;

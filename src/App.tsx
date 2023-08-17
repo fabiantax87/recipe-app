@@ -8,6 +8,8 @@ import Breakfast from "pages/Breakfast/Breakfast";
 import Register from "pages/Register/Register";
 import Login from "pages/Login/Login";
 import Account from "pages/Account/Account";
+import OtherRecipes from "pages/OtherRecipes/OtherRecipes";
+import CreateRecipeModal from "components/CreateRecipeModal/CreateRecipeModal";
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
           <Route path="dinner" element={<Dinner />} />
           <Route path="lunch" element={<Lunch />} />
           <Route path="breakfast" element={<Breakfast />} />
+          <Route path="other-recipes" element={<OtherRecipes />} />
+          <Route path="create-recipe" element={<CreateRecipeModal />} />
         </Route>
       </Routes>
     </div>

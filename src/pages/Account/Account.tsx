@@ -14,6 +14,10 @@ const Account = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    console.log(user);
+  }, []);
+
   return (
     <div>
       Account

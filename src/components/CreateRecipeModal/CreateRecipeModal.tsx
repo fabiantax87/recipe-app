@@ -5,19 +5,21 @@ import { v4 } from "uuid";
 import "./CreateRecipeModal.scss";
 import GroceryList from "components/GroceryList/GroceryList";
 import RecipeStepList from "components/RecipeStepList/RecipeStepList";
+import { useNavigate } from "react-router-dom";
 
-type CreateRecipeModalProps = {
-  switchModalOpen: any;
-};
-
-const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
+const CreateRecipeModal = () => {
   const [recipeName, setRecipeName] = useState("");
   const [recipeImg, setRecipeImg] = useState<any>([]);
+  const [recipeDesc, setRecipeDesc] = useState("");
   const [groceryList, setGroceryList] = useState<any>([]);
   const [groceryItem, setGroceryItem] = useState("");
   const [recipeStepList, setRecipeStepList] = useState<any>([]);
   const [recipeStep, setRecipeStep] = useState("");
+  const [estimateTime, setEstimateTime] = useState({ value: 0, timeType: "minutes", timeTypeShort: "min" });
+  const [estimateCalories, setEstimateCalories] = useState(0);
   const [recipeType, setRecipeType] = useState({ breakfast: false, lunch: false, dinner: false });
+
+  let navigate = useNavigate();
 
   const addGrocery = (e: any) => {
     e.preventDefault();
@@ -47,6 +49,14 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
     setRecipeType({ breakfast: recipeType.breakfast, lunch: recipeType.lunch, dinner: !recipeType.dinner });
   };
 
+  const estimateTimeTypeChange = (timeType: any) => {
+    if (timeType === "minutes") {
+      setEstimateTime({ value: estimateTime.value, timeType: "minutes", timeTypeShort: "min" });
+    } else if (timeType === "hours") {
+      setEstimateTime({ value: estimateTime.value, timeType: "hours", timeTypeShort: "h" });
+    }
+  };
+
   const submitRecipe = async (e: any) => {
     e.preventDefault();
 
@@ -58,14 +68,14 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
             alert("Not all fields have been filled, try again");
           } else {
             if (recipeName !== "" && groceryList.length > 0 && recipeStepList.length > 0 && recipeImg.name) {
-              createRecipe(recipeName, groceryList, recipeStepList, url, recipeType);
+              createRecipe(recipeName, url, recipeDesc, groceryList, recipeStepList, estimateTime, estimateCalories, recipeType);
             } else {
               alert("Not all fields have been filled, try again");
             }
           }
         })
         .then(() => {
-          switchModalOpen();
+          navigate("/");
         })
         .catch((err) => {
           console.error(err);
@@ -78,26 +88,33 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
       <div className="modal-container">
         <header className="modal-header">
           <h3>Create a recipe</h3>
-          <svg onClick={() => switchModalOpen()} viewBox="0 0 24 24">
+          <svg onClick={() => navigate("/")} viewBox="0 0 24 24">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </header>
         <div className="modal-content">
-          <label>Recipe name</label>
-          <input type="text" placeholder="Give your recipe a name" value={recipeName} onChange={(e) => setRecipeName(e.target.value)} />
-          <div className="file-input">
-            <label>Meal picture</label>
-            <label htmlFor="file-upload" className="custom-file-upload">
-              <svg className="upload-icon" viewBox="0 0 24 24">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="17 8 12 3 7 8"></polyline>
-                <line x1="12" y1="3" x2="12" y2="15"></line>
-              </svg>
-              {recipeImg.name ? <p>{recipeImg.name}</p> : <p>Add a picture</p>}
-            </label>
-            <input type="file" onChange={(e: any) => setRecipeImg(e.target.files[0])} id="file-upload" accept="image/png, image/jpeg" />
-          </div>
+          <form className="basic-info-form">
+            <label>Recipe name</label>
+            <input type="text" placeholder="Give your recipe a name" value={recipeName} onChange={(e) => setRecipeName(e.target.value)} />
+
+            <div className="file-input">
+              <label>Recipe picture</label>
+              <label htmlFor="file-upload" className="custom-file-upload">
+                <svg className="upload-icon" viewBox="0 0 24 24">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                {recipeImg.name ? <p>{recipeImg.name}</p> : <p>Add a picture</p>}
+              </label>
+              <input type="file" onChange={(e: any) => setRecipeImg(e.target.files[0])} id="file-upload" accept="image/png, image/jpeg" />
+            </div>
+
+            <label>Recipe description</label>
+            <textarea placeholder="Description" value={recipeDesc} onChange={(e) => setRecipeDesc(e.target.value)} />
+          </form>
+
           <form onSubmit={(e) => addGrocery(e)} className="modal-form">
             <label>Grocery list</label>
             <div className="grocery-list-input">
@@ -106,6 +123,7 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
             </div>
             {groceryList.length > 0 ? <GroceryList groceryList={groceryList} setGroceryList={setGroceryList} /> : <></>}
           </form>
+
           <form onSubmit={(e) => addRecipeStep(e)} className="modal-form">
             <label>Recipe steps</label>
             <div className="recipe-step-input">
@@ -114,16 +132,36 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
             </div>
             {recipeStepList.length > 0 ? <RecipeStepList recipeStepList={recipeStepList} setRecipeStepList={setRecipeStepList} /> : <></>}
           </form>
-          <div className="meal-type">
-            <label className="meal-check">
+
+          <label>Estimate time to make</label>
+          <div className="estimate-time">
+            <input
+              type="number"
+              placeholder="Estimate time"
+              min={0}
+              value={estimateTime.value}
+              onChange={(e) => setEstimateTime({ value: parseInt(e.target.value), timeType: estimateTime.timeType, timeTypeShort: estimateTime.timeTypeShort })}
+            />
+            <select onChange={(e) => estimateTimeTypeChange(e.target.value)} name="time">
+              <option value="minutes">Minutes</option>
+              <option value="hours">Hours</option>
+            </select>
+          </div>
+
+          <label>Estimate amount of calories</label>
+          <input type="number" placeholder="Estimate calories" min={0} value={estimateCalories} onChange={(e) => setEstimateCalories(parseInt(e.target.value))} />
+
+          <div className="recipe-type">
+            <label>Recipe type</label>
+            <label className="recipe-check">
               <input type="checkbox" name="breakfast" onChange={() => toggleBreakfast()} />
               Breakfast
             </label>
-            <label className="meal-check">
+            <label className="recipe-check">
               <input type="checkbox" name="lunch" onChange={() => toggleLunch()} />
               Lunch
             </label>
-            <label className="meal-check">
+            <label className="recipe-check">
               <input type="checkbox" name="dinner" onChange={() => toggleDinner()} />
               Dinner
             </label>
@@ -133,7 +171,7 @@ const CreateRecipeModal = ({ switchModalOpen }: CreateRecipeModalProps) => {
           <button className="create-btn" onClick={(e) => submitRecipe(e)}>
             Create Recipe
           </button>
-          <button className="cancel-btn" onClick={() => switchModalOpen()}>
+          <button className="cancel-btn" onClick={() => navigate("/")}>
             Cancel
           </button>
         </footer>
